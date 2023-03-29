@@ -46,6 +46,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, HIGH);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Move Frente");
         break;
     }
     case 'I':
@@ -54,6 +56,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, HIGH);
+
+        Serial.println("Frente Direita");
         break;
     }
     case 'G':
@@ -62,6 +66,8 @@ void loop()
         digitalWrite(pin2, HIGH);
         digitalWrite(pin3, HIGH);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Frente Esquerda");
         break;
     }
     case 'R':
@@ -70,6 +76,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Direita");
         break;
     }
     case 'L':
@@ -78,6 +86,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, HIGH);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Esquerda");
         break;
     }
     case 'B':
@@ -86,6 +96,8 @@ void loop()
         digitalWrite(pin2, HIGH);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, HIGH);
+
+        Serial.println("Ré");
         break;
     }
     case 'H':
@@ -94,6 +106,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, HIGH);
+
+        Serial.println("Ré Esquerda");
         break;
     }
     case 'J':
@@ -102,6 +116,8 @@ void loop()
         digitalWrite(pin2, HIGH);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Ré Direita");
         break;
     }
     default:
@@ -110,6 +126,8 @@ void loop()
         digitalWrite(pin2, LOW);
         digitalWrite(pin3, LOW);
         digitalWrite(pin4, LOW);
+
+        Serial.println("Parado");
         break;
     }
     }
