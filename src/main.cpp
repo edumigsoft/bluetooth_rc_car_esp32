@@ -1,13 +1,49 @@
 #include "BluetoothSerial.h"
 
-#define pin1 13
-#define pin2 27
-#define pin3 26
-#define pin4 25
+#define motorRight_P1 4
+#define motorRight_P2 12
+#define motorLeft_P1 32
+#define motorLeft_P2 25
 
 BluetoothSerial SerialBT;
 char comando;
 char comandoOld = ' ';
+
+void rightStop()
+{
+  digitalWrite(motorRight_P1, LOW);
+  digitalWrite(motorRight_P2, LOW);
+}
+
+void leftStop()
+{
+  digitalWrite(motorLeft_P1, LOW);
+  digitalWrite(motorLeft_P2, LOW);
+}
+
+void rightForward()
+{
+  digitalWrite(motorRight_P1, HIGH);
+  digitalWrite(motorRight_P2, LOW);
+}
+
+void leftForward()
+{
+  digitalWrite(motorLeft_P1, HIGH);
+  digitalWrite(motorLeft_P2, LOW);
+}
+
+void rightBack()
+{
+  digitalWrite(motorRight_P1, LOW);
+  digitalWrite(motorRight_P2, HIGH);
+}
+
+void leftBack()
+{
+  digitalWrite(motorLeft_P1, LOW);
+  digitalWrite(motorLeft_P2, HIGH);
+}
 
 void setup()
 {
@@ -15,17 +51,15 @@ void setup()
   // btSerial.begin(9600);
   SerialBT.begin("Carrinho");
 
-  pinMode(pin1, OUTPUT);
-  pinMode(pin2, OUTPUT);
-  pinMode(pin3, OUTPUT);
-  pinMode(pin4, OUTPUT);
+  pinMode(motorRight_P1, OUTPUT);
+  pinMode(motorRight_P2, OUTPUT);
+  pinMode(motorLeft_P1, OUTPUT);
+  pinMode(motorLeft_P2, OUTPUT);
 
   Serial.println();
   Serial.println();
 
   Serial.println("Conecte em: Carrinho");
-
-  Serial.println("Fim Setup");
 
   delay(2000);
 }
@@ -35,104 +69,93 @@ void loop()
   if (SerialBT.available())
   {
     comando = SerialBT.read();
+
+    // Serial.print("comando: ");
+    // Serial.println(comando);
   }
 
-  if (comando != comandoOld) {
+  if (comando != comandoOld)
+  {
     comandoOld = comando;
-
 
     switch (comando)
     {
-      case 'F':
-        { // Forward / Frente
-          digitalWrite(pin1, HIGH);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, HIGH);
-          digitalWrite(pin4, LOW);
+    case 'F':
+    { // Forward / Frente
+      rightForward();
+      leftForward();
 
-          Serial.println("Forward / Frente");
-          break;
-        }
-      case 'I':
-        { // Forward Right / Frente Direita
-          digitalWrite(pin1, HIGH);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, HIGH);
+      Serial.println("F - Forward / Frente");
+      break;
+    }
+    case 'B':
+    { // Back / Ré
+      rightBack();
+      leftBack();
 
-          Serial.println("Forward Right / Frente Direita");
-          break;
-        }
-      case 'G':
-        { // Forward Left / Frente Esquerda
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, HIGH);
-          digitalWrite(pin3, HIGH);
-          digitalWrite(pin4, LOW);
+      Serial.println("B - Back / Ré");
+      break;
+    }
+    case 'R':
+    { // Right / Direita
+      rightStop();
+      leftForward();
 
-          Serial.println("Forward Left / Frente Esquerda");
-          break;
-        }
-      case 'R':
-        { // Right / Direita
-          digitalWrite(pin1, HIGH);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, LOW);
+      Serial.println("R - Right / Direita");
+      break;
+    }
+    case 'L':
+    { // Left / Esquerda
+      rightForward();
+      leftStop();
 
-          Serial.println("Right / Direita");
-          break;
-        }
-      case 'L':
-        { // Left / Esquerda
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, HIGH);
-          digitalWrite(pin4, LOW);
+      Serial.println("L - Left / Esquerda");
+      break;
+    }
 
-          Serial.println("Left / Esquerda");
-          break;
-        }
-      case 'B':
-        { // Back / Ré
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, HIGH);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, HIGH);
+    case 'I':
+    { // Forward Right / Frente Direita
+      rightBack();
+      leftForward();
 
-          Serial.println("Back / Ré");
-          break;
-        }
-      case 'H':
-        { // Back Left / Ré Esquerda
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, HIGH);
+      Serial.println("I - Forward Right / Frente Direita");
+      break;
+    }
+    case 'G':
+    { // Forward Left / Frente Esquerda
 
-          Serial.println("Back Left / Ré Esquerda");
-          break;
-        }
-      case 'J':
-        { // Back Right / Ré Direita
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, HIGH);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, LOW);
+      rightForward();
+      leftBack();
 
-          Serial.println("Back Right / Ré Direita");
-          break;
-        }
-      default:
-        { // Stop / Parado
-          digitalWrite(pin1, LOW);
-          digitalWrite(pin2, LOW);
-          digitalWrite(pin3, LOW);
-          digitalWrite(pin4, LOW);
+      Serial.println("G - Forward Left / Frente Esquerda");
+      break;
+    }
 
-          Serial.println("Stop / Parado");
-          break;
-        }
+    case 'H':
+    { // Back Left / Ré Esquerda
+      rightStop();
+      leftBack();
+
+      Serial.println("H - Back Left / Ré Esquerda");
+      break;
+    }
+    case 'J':
+    { // Back Right / Ré Direita
+      rightBack();
+      leftStop();
+
+      Serial.println("J - Back Right / Ré Direita");
+      break;
+    }
+    case 'S':
+      // default:
+      { // Stop / Parado
+        rightStop();
+        leftStop();
+
+        Serial.println("S - Stop / Parado");
+        break;
+      }
     }
   }
 };
