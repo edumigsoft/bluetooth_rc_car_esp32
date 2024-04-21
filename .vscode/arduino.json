@@ -1,7 +1,0 @@
-{
-    "sketch": "bluetooth_rc_car_esp32.ino",
-    "output": "build",
-    "configuration": "FlashFreq=80,PartitionScheme=default,UploadSpeed=921600,DebugLevel=none,EraseFlash=all",
-    "board": "esp32:esp32:mhetesp32minikit",
-    "port": "/dev/ttyACM0"
-}
