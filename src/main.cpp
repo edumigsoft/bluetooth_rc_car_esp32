@@ -44,93 +44,93 @@ void loop()
     switch (comando)
     {
       case 'F':
-        { // move frente
+        { // Forward / Frente
           digitalWrite(pin1, HIGH);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, HIGH);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Move Frente");
+          Serial.println("Forward / Frente");
           break;
         }
       case 'I':
-        { // frente direita
+        { // Forward Right / Frente Direita
           digitalWrite(pin1, HIGH);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, HIGH);
 
-          Serial.println("Frente Direita");
+          Serial.println("Forward Right / Frente Direita");
           break;
         }
       case 'G':
-        { // frente esquerda
+        { // Forward Left / Frente Esquerda
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, HIGH);
           digitalWrite(pin3, HIGH);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Frente Esquerda");
+          Serial.println("Forward Left / Frente Esquerda");
           break;
         }
       case 'R':
-        { // direita
+        { // Right / Direita
           digitalWrite(pin1, HIGH);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Direita");
+          Serial.println("Right / Direita");
           break;
         }
       case 'L':
-        { // esquerda
+        { // Left / Esquerda
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, HIGH);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Esquerda");
+          Serial.println("Left / Esquerda");
           break;
         }
       case 'B':
-        { // ré
+        { // Back / Ré
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, HIGH);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, HIGH);
 
-          Serial.println("Ré");
+          Serial.println("Back / Ré");
           break;
         }
       case 'H':
-        { // ré esquerda
+        { // Back Left / Ré Esquerda
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, HIGH);
 
-          Serial.println("Ré Esquerda");
+          Serial.println("Back Left / Ré Esquerda");
           break;
         }
       case 'J':
-        { // ré direita
+        { // Back Right / Ré Direita
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, HIGH);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Ré Direita");
+          Serial.println("Back Right / Ré Direita");
           break;
         }
       default:
-        {
+        { // Stop / Parado
           digitalWrite(pin1, LOW);
           digitalWrite(pin2, LOW);
           digitalWrite(pin3, LOW);
           digitalWrite(pin4, LOW);
 
-          Serial.println("Parado");
+          Serial.println("Stop / Parado");
           break;
         }
     }
