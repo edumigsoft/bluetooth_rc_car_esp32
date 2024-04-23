@@ -5,46 +5,46 @@
 #define motorLeft_P1 32
 #define motorLeft_P2 25
 #define statusLed 2
-#define buzzer 33
+// #define buzzer 33
 
 unsigned long previousMillisLed = 0;
-unsigned long previousMillisBuzzerOn = 0;
-unsigned long previousMillisBuzzerOff = 0;
+// unsigned long previousMillisBuzzerOn = 0;
+// unsigned long previousMillisBuzzerOff = 0;
 
 BluetoothSerial SerialBT;
 char comando;
 char comandoOld = ' ';
 
-void buzzerBlink(bool on)
-{
-  // unsigned long currentMillis = millis();
-  // int interval = 1000;
+// void buzzerBlink(bool on)
+// {
+//   // unsigned long currentMillis = millis();
+//   // int interval = 1000;
 
-  // static bool buzzer_on = false;
-  if (on)
-  {
-    tone(buzzer, 1000);
-    // if (currentMillis - previousMillisBuzzerOn >= interval && !buzzer_on)
-    // {
-    //   previousMillisBuzzerOn = currentMillis;
+//   // static bool buzzer_on = false;
+//   if (on)
+//   {
+//     tone(buzzer, 1000);
+//     // if (currentMillis - previousMillisBuzzerOn >= interval && !buzzer_on)
+//     // {
+//     //   previousMillisBuzzerOn = currentMillis;
 
-    //   tone(buzzer, 1000); // Send 1KHz sound signal...
-    //   buzzer_on = true;
-    // }
+//     //   tone(buzzer, 1000); // Send 1KHz sound signal...
+//     //   buzzer_on = true;
+//     // }
 
-    // if (currentMillis - previousMillisBuzzerOff >= interval && buzzer_on)
-    // {
-    //   previousMillisBuzzerOff = currentMillis;
+//     // if (currentMillis - previousMillisBuzzerOff >= interval && buzzer_on)
+//     // {
+//     //   previousMillisBuzzerOff = currentMillis;
 
-    //   noTone(buzzer);
-    //   buzzer_on = false;
-    // }
-  }
-  else
-  {
-    noTone(buzzer);
-  }
-}
+//     //   noTone(buzzer);
+//     //   buzzer_on = false;
+//     // }
+//   }
+//   else
+//   {
+//     noTone(buzzer);
+//   }
+// }
 
 void statusBlink(bool connected)
 {
@@ -110,7 +110,7 @@ void setup()
   pinMode(motorLeft_P1, OUTPUT);
   pinMode(motorLeft_P2, OUTPUT);
   pinMode(statusLed, OUTPUT);
-  pinMode(buzzer, OUTPUT);
+  // pinMode(buzzer, OUTPUT);
 
   Serial.println();
   Serial.println();
@@ -202,14 +202,14 @@ void loop()
     {
     case 'V':
     { // Horn On
-      buzzerBlink(true);
+      // buzzerBlink(true);
 
       Serial.println("V - Horn on / Buzina ligada");
       break;
     }
     case 'v':
     { // Horn Off
-      buzzerBlink(false);
+      // buzzerBlink(false);
 
       Serial.println("V - Horn off / Buzina desligada");
       break;
@@ -246,7 +246,6 @@ void loop()
       Serial.println("L - Left / Esquerda");
       break;
     }
-
     case 'I':
     { // Forward Right / Frente Direita
       rightBack();
@@ -264,7 +263,6 @@ void loop()
       Serial.println("G - Forward Left / Frente Esquerda");
       break;
     }
-
     case 'H':
     { // Back Left / Ré Esquerda
       rightStop();
