@@ -15,6 +15,9 @@ BluetoothSerial SerialBT;
 char comando;
 char comandoOld = ' ';
 
+int dutyRight = 0;
+int dutyLeft = 0;
+
 // void buzzerBlink(bool on)
 // {
 //   // unsigned long currentMillis = millis();
@@ -65,38 +68,38 @@ void statusBlink(bool connected)
 
 void rightStop()
 {
-  digitalWrite(motorRight_P1, LOW);
-  digitalWrite(motorRight_P2, LOW);
+  analogWrite(motorRight_P1, 0);
+  analogWrite(motorRight_P2, 0);
 }
 
 void leftStop()
 {
-  digitalWrite(motorLeft_P1, LOW);
-  digitalWrite(motorLeft_P2, LOW);
+  analogWrite(motorLeft_P1, 0);
+  analogWrite(motorLeft_P2, 0);
 }
 
-void rightForward()
+void rightForward(int duty)
 {
-  digitalWrite(motorRight_P1, HIGH);
-  digitalWrite(motorRight_P2, LOW);
+  analogWrite(motorRight_P1, duty);
+  analogWrite(motorRight_P2, 0);
 }
 
-void leftForward()
+void leftForward(int duty)
 {
-  digitalWrite(motorLeft_P1, HIGH);
-  digitalWrite(motorLeft_P2, LOW);
+  analogWrite(motorLeft_P1, duty);
+  analogWrite(motorLeft_P2, 0);
 }
 
-void rightBack()
+void rightBack(int duty)
 {
-  digitalWrite(motorRight_P1, LOW);
-  digitalWrite(motorRight_P2, HIGH);
+  analogWrite(motorRight_P1, 0);
+  analogWrite(motorRight_P2, duty);
 }
 
-void leftBack()
+void leftBack(int duty)
 {
-  digitalWrite(motorLeft_P1, LOW);
-  digitalWrite(motorLeft_P2, HIGH);
+  analogWrite(motorLeft_P1, 0);
+  analogWrite(motorLeft_P2, duty);
 }
 
 void setup()
@@ -216,16 +219,16 @@ void loop()
     }
     case 'F':
     { // Forward / Frente
-      rightForward();
-      leftForward();
+      rightForward(dutyRight);
+      leftForward(dutyLeft);
 
       Serial.println("F - Forward / Frente");
       break;
     }
     case 'B':
     { // Back / Ré
-      rightBack();
-      leftBack();
+      rightBack(dutyRight);
+      leftBack(dutyLeft);
 
       Serial.println("B - Back / Ré");
       break;
@@ -233,14 +236,14 @@ void loop()
     case 'R':
     { // Right / Direita
       rightStop();
-      leftForward();
+      leftForward(dutyLeft);
 
       Serial.println("R - Right / Direita");
       break;
     }
     case 'L':
     { // Left / Esquerda
-      rightForward();
+      rightForward(dutyRight);
       leftStop();
 
       Serial.println("L - Left / Esquerda");
@@ -248,8 +251,8 @@ void loop()
     }
     case 'I':
     { // Forward Right / Frente Direita
-      rightBack();
-      leftForward();
+      rightForward(dutyRight / 2);
+      leftForward(dutyLeft);
 
       Serial.println("I - Forward Right / Frente Direita");
       break;
@@ -257,24 +260,24 @@ void loop()
     case 'G':
     { // Forward Left / Frente Esquerda
 
-      rightForward();
-      leftBack();
+      rightForward(dutyRight);
+      leftForward(dutyLeft / 2);
 
       Serial.println("G - Forward Left / Frente Esquerda");
       break;
     }
     case 'H':
     { // Back Left / Ré Esquerda
-      rightStop();
-      leftBack();
+      rightBack(dutyRight / 2);
+      leftBack(dutyLeft);
 
       Serial.println("H - Back Left / Ré Esquerda");
       break;
     }
     case 'J':
     { // Back Right / Ré Direita
-      rightBack();
-      leftStop();
+      rightBack(dutyRight);
+      leftBack(dutyLeft / 2);
 
       Serial.println("J - Back Right / Ré Direita");
       break;
@@ -288,6 +291,94 @@ void loop()
         Serial.println("S - Stop / Parado");
         break;
       }
+    case '0':
+    { // Speed 0
+      dutyRight = 0;
+      dutyLeft = 0;
+
+      Serial.println("0 - Speed 0 / Velocidade 0");
+      break;
+    }
+    case '1':
+    { // Speed 1
+      dutyRight = 110;
+      dutyLeft = 110;
+
+      Serial.println("1 - Speed 1 / Velocidade 1");
+      break;
+    }
+    case '2':
+    { // Speed 2
+      dutyRight = 140;
+      dutyLeft = 140;
+
+      Serial.println("2 - Speed 2 / Velocidade 2");
+      break;
+    }
+    case '3':
+    { // Speed 3
+      dutyRight = 160;
+      dutyLeft = 160;
+
+      Serial.println("3 - Speed 3 / Velocidade 3");
+      break;
+    }
+    case '4':
+    { // Speed 4
+      dutyRight = 180;
+      dutyLeft = 180;
+
+      Serial.println("4 - Speed 4 / Velocidade 4");
+      break;
+    }
+    case '5':
+    { // Speed 5
+      dutyRight = 200;
+      dutyLeft = 200;
+
+      Serial.println("5 - Speed 5 / Velocidade 5");
+      break;
+    }
+    case '6':
+    { // Speed 6
+      dutyRight = 210;
+      dutyLeft = 210;
+
+      Serial.println("6 - Speed 6 / Velocidade 6");
+      break;
+    }
+    case '7':
+    { // Speed 7
+      dutyRight = 220;
+      dutyLeft = 220;
+
+      Serial.println("7 - Speed 7 / Velocidade 7");
+      break;
+    }
+    case '8':
+    { // Speed 8
+      dutyRight = 230;
+      dutyLeft = 230;
+
+      Serial.println("8 - Speed 8 / Velocidade 8");
+      break;
+    }
+    case '9':
+    { // Speed 9
+      dutyRight = 240;
+      dutyLeft = 240;
+
+      Serial.println("9 - Speed 9 / Velocidade 9");
+      break;
+    }
+    case 'q':
+    { // Speed 10
+      dutyRight = 255;
+      dutyLeft = 255;
+
+      Serial.println("q - Speed 10 / Velocidade 10");
+      break;
+    }
     }
   }
 };
