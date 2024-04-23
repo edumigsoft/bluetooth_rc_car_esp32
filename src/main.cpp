@@ -6,10 +6,38 @@
 #define motorLeft_P2 25
 #define statusLed 2
 // #define buzzer 33
+#define pinEcho 23
+#define pinTrigger 5
+
+/*
+https://forum.arduino.cc/t/distance-sensor-without-delay/307802/11
+*/
+// unsigned long duration;           // the time ECHO is HIGH
+// int distance;                     // the distance in cms
+// unsigned long previousMicros = 0; // will sotre last time TRIGGER was updated
+// long OnTime = 10;                 // microseconds of on-time
+// long OffTime = 2;                 // microseconds of off-time
+// unsigned long viewTime = 200;
+// unsigned long previousMillis = 0; // will store last time viewTime was updated
+// int triggerState = LOW;           // triggerState used to set it up
+/*---------------------------------------------*/
+
+/*
+https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/
+*/
+// define sound speed in cm/uS
+#define SOUND_SPEED 0.034
+#define CM_TO_INCH 0.393701
+
+long duration;
+float distanceCm = 15;
+float distanceInch;
+/*----------------------------*/
 
 unsigned long previousMillisLed = 0;
 // unsigned long previousMillisBuzzerOn = 0;
 // unsigned long previousMillisBuzzerOff = 0;
+unsigned long previousMillisDistance = 0;
 
 BluetoothSerial SerialBT;
 char comando;
@@ -17,6 +45,69 @@ char comandoOld = ' ';
 
 int dutyRight = 0;
 int dutyLeft = 0;
+
+// void view()
+// { //  pc  data views
+//   // Serial.print(distance);
+//   // Serial.println("  cm");
+//   // // chech to see if it´ time to change the state
+//   // unsigned long currentMillis = millis();
+//   // if (currentMillis - previousMillis >= viewTime)
+//   // {
+//   //   previousMillis = currentMillis; // remember the time
+//   // }
+// }
+
+void readDistance()
+{
+  // // check to see if it's time to change the state of the TRIGGER
+  // unsigned long currentMicros = micros();
+  // if ((triggerState == LOW) && (currentMicros - previousMicros >= OffTime))
+  // {
+  //   triggerState = HIGH;                    // turn it on
+  //   previousMicros = currentMicros;         // remember the time
+  //   digitalWrite(pinTrigger, triggerState); // update the actual trigger
+  // }
+  // else if ((triggerState == HIGH) && (currentMicros - previousMicros >= OnTime))
+  // {
+  //   triggerState = LOW;                     // turn it off
+  //   previousMicros = currentMicros;         // remember the time
+  //   digitalWrite(pinTrigger, triggerState); // update the actual trigger
+  // }
+  // duration = pulseIn(pinEcho, HIGH, 1000);
+  // distance = duration / 58;
+  // view();
+
+  unsigned long currentMillis = millis();
+  int interval = 1000;
+  if (currentMillis - previousMillisDistance >= interval)
+  {
+    previousMillisLed = currentMillis;
+
+    // Clears the trigPin
+    digitalWrite(pinTrigger, LOW);
+    delayMicroseconds(2);
+    // Sets the trigPin on HIGH state for 10 micro seconds
+    digitalWrite(pinTrigger, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(pinTrigger, LOW);
+
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    duration = pulseIn(pinEcho, HIGH);
+
+    // Calculate the distance
+    distanceCm = duration * SOUND_SPEED / 2;
+
+    // Convert to inches
+    distanceInch = distanceCm * CM_TO_INCH;
+
+    // Prints the distance in the Serial Monitor
+    Serial.print("Distance (cm): ");
+    Serial.println(distanceCm);
+    Serial.print("Distance (inch): ");
+    Serial.println(distanceInch);
+  }
+}
 
 // void buzzerBlink(bool on)
 // {
@@ -114,6 +205,8 @@ void setup()
   pinMode(motorLeft_P2, OUTPUT);
   pinMode(statusLed, OUTPUT);
   // pinMode(buzzer, OUTPUT);
+  pinMode(pinEcho, INPUT);
+  pinMode(pinTrigger, OUTPUT);
 
   Serial.println();
   Serial.println();
@@ -189,6 +282,8 @@ void loop()
 
   statusBlink(SerialBT.connected());
 
+  // readDistance();
+
   if (SerialBT.available())
   {
     comando = SerialBT.read();
@@ -197,7 +292,14 @@ void loop()
     // Serial.println(comando);
   }
 
-  if (comando != comandoOld)
+  if (distanceCm < 11)
+  {
+    rightStop();
+    leftStop();
+
+    Serial.println("distanceCm < 11");
+  }
+  else if (comando != comandoOld)
   {
     comandoOld = comando;
 
@@ -381,4 +483,6 @@ void loop()
     }
     }
   }
+
+  // readDistance();
 };
