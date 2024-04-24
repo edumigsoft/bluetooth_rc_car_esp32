@@ -31,9 +31,9 @@ https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/
 
 long duration;
 float distanceCm = 15;
-float distanceInch;
 /*----------------------------*/
 
+unsigned long currentMillis;
 unsigned long previousMillisLed = 0;
 // unsigned long previousMillisBuzzerOn = 0;
 // unsigned long previousMillisBuzzerOff = 0;
@@ -46,43 +46,12 @@ char comandoOld = ' ';
 int dutyRight = 0;
 int dutyLeft = 0;
 
-// void view()
-// { //  pc  data views
-//   // Serial.print(distance);
-//   // Serial.println("  cm");
-//   // // chech to see if it´ time to change the state
-//   // unsigned long currentMillis = millis();
-//   // if (currentMillis - previousMillis >= viewTime)
-//   // {
-//   //   previousMillis = currentMillis; // remember the time
-//   // }
-// }
-
 void readDistance()
 {
-  // // check to see if it's time to change the state of the TRIGGER
-  // unsigned long currentMicros = micros();
-  // if ((triggerState == LOW) && (currentMicros - previousMicros >= OffTime))
-  // {
-  //   triggerState = HIGH;                    // turn it on
-  //   previousMicros = currentMicros;         // remember the time
-  //   digitalWrite(pinTrigger, triggerState); // update the actual trigger
-  // }
-  // else if ((triggerState == HIGH) && (currentMicros - previousMicros >= OnTime))
-  // {
-  //   triggerState = LOW;                     // turn it off
-  //   previousMicros = currentMicros;         // remember the time
-  //   digitalWrite(pinTrigger, triggerState); // update the actual trigger
-  // }
-  // duration = pulseIn(pinEcho, HIGH, 1000);
-  // distance = duration / 58;
-  // view();
-
-  unsigned long currentMillis = millis();
-  int interval = 1000;
+  int interval = 100;
   if (currentMillis - previousMillisDistance >= interval)
   {
-    previousMillisLed = currentMillis;
+    previousMillisDistance = currentMillis;
 
     // Clears the trigPin
     digitalWrite(pinTrigger, LOW);
@@ -97,15 +66,6 @@ void readDistance()
 
     // Calculate the distance
     distanceCm = duration * SOUND_SPEED / 2;
-
-    // Convert to inches
-    distanceInch = distanceCm * CM_TO_INCH;
-
-    // Prints the distance in the Serial Monitor
-    Serial.print("Distance (cm): ");
-    Serial.println(distanceCm);
-    Serial.print("Distance (inch): ");
-    Serial.println(distanceInch);
   }
 }
 
@@ -142,7 +102,6 @@ void readDistance()
 
 void statusBlink(bool connected)
 {
-  unsigned long currentMillis = millis();
   int interval = 100;
 
   if (connected)
@@ -280,9 +239,11 @@ void loop()
 
   */
 
+  currentMillis = millis();
+
   statusBlink(SerialBT.connected());
 
-  // readDistance();
+  readDistance();
 
   if (SerialBT.available())
   {
@@ -292,14 +253,15 @@ void loop()
     // Serial.println(comando);
   }
 
-  if (distanceCm < 11)
+  if (distanceCm < 11 && (comando == 'F' || comando == 'I' || comando == 'G'))
   {
     rightStop();
     leftStop();
 
     Serial.println("distanceCm < 11");
   }
-  else if (comando != comandoOld)
+
+  if (comando != comandoOld)
   {
     comandoOld = comando;
 
@@ -361,7 +323,6 @@ void loop()
     }
     case 'G':
     { // Forward Left / Frente Esquerda
-
       rightForward(dutyRight);
       leftForward(dutyLeft / 2);
 
@@ -483,6 +444,4 @@ void loop()
     }
     }
   }
-
-  // readDistance();
-};
+}
