@@ -9,18 +9,7 @@
 #define pinEcho 23
 #define pinTrigger 5
 
-/*
-https://forum.arduino.cc/t/distance-sensor-without-delay/307802/11
-*/
-// unsigned long duration;           // the time ECHO is HIGH
-// int distance;                     // the distance in cms
-// unsigned long previousMicros = 0; // will sotre last time TRIGGER was updated
-// long OnTime = 10;                 // microseconds of on-time
-// long OffTime = 2;                 // microseconds of off-time
-// unsigned long viewTime = 200;
-// unsigned long previousMillis = 0; // will store last time viewTime was updated
-// int triggerState = LOW;           // triggerState used to set it up
-/*---------------------------------------------*/
+#define nameConnectTo 'Car ESP32'
 
 /*
 https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/
@@ -156,7 +145,7 @@ void setup()
 {
   Serial.begin(9600);
   // btSerial.begin(9600);
-  SerialBT.begin("Carrinho");
+  SerialBT.begin(nameConnectTo);
 
   pinMode(motorRight_P1, OUTPUT);
   pinMode(motorRight_P2, OUTPUT);
@@ -170,7 +159,8 @@ void setup()
   Serial.println();
   Serial.println();
 
-  Serial.println("Conecte em: Carrinho");
+  Serial.print("Connect to: ");
+  Serial.println(nameConnectTo);
 
   delay(2000);
 }
